@@ -36,7 +36,7 @@ export default class WebScene {
     start() {
         this.isActive = true;
         this.clock.start();
-        _render();
+        this._render();
     }
 
     stop() {
@@ -61,7 +61,7 @@ export default class WebScene {
 
             this.renderer.render(this.scene, this.camera);
 
-            return requestAnimationFrame(this._animate);
+            return requestAnimationFrame(this._render);
         }
     }
 
