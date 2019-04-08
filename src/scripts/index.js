@@ -3,7 +3,8 @@
  * Handles setup and scene routing.
  */
 
-import MonoScene from './scenes/monoscene';
+// Sample scene for default loading
+import Sample from './scenes/sample';
 
 import {
     WebGLRenderer
@@ -18,7 +19,7 @@ class Site {
         this._initEventListeners();
 
         // Load starting scene
-        this.loadScene('');
+        this.loadScene('/');
     }
 
     _initEventListeners() {
@@ -27,7 +28,7 @@ class Site {
 
         // Scene loading event listener
         window.addEventListener('loadscene', ((e) => {
-            this.loadScene(e.detail.path);
+            this.loadScene(e.detail);
         }).bind(this), true);
 
         window.onpopstate = (() => {
@@ -53,12 +54,12 @@ class Site {
         }
 
         // Load new scene
-        switch(name) {
-            case '/monoscene':
-                this.scene = new MonoScene(this.renderer);
+        switch(path) {
+            case '/':
+                this.scene = new Sample(this.renderer);
                 break;
             default:
-                this.scene = new MonoScene(this.renderer);
+                this.scene = new Sample(this.renderer);
                 break;
         }
 
@@ -71,7 +72,7 @@ class Site {
     onWindowResize() {
         const width = window.innerWidth;
         const height = window.innerHeight;
-        //this.scene.updateCameraAspect(width / height);
+        this.scene.updateCameraAspect(width / height);
         this.renderer.setSize(width, height);
     }
 };

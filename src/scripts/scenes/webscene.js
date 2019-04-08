@@ -84,7 +84,7 @@ export default class WebScene {
      * Fires an event to load a new scene, effectively ending this one
      * @param {String} path 
      */
-    _loadScene(path) {
+    loadScene(path) {
         window.dispatchEvent(
             new CustomEvent('loadscene', {detail : path})
         );

@@ -3,11 +3,11 @@
  */
 
 import WebScene from './webscene';
-import { } from 'three';
+import {  } from 'three';
 
-export default class MonoScene extends WebScene {
+export default class Sample extends WebScene {
     static path() {
-        return '/monoscene';
+        return '/sample';
     }
 
     constructor(renderer) {
