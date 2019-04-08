@@ -28,17 +28,27 @@ export default class WebScene {
         this._render = this._render.bind(this);
     }
 
+    /**
+     * Updates the aspect ratio of the camera.
+     * Generally called on a window resize.
+     */
     updateCameraAspect(aspect) {
         this.camera.aspect = aspect;
         this.camera.updateProjectionMatrix();
     }
 
+    /**
+     * Starts the render loop and the clock.
+     */
     start() {
         this.isActive = true;
         this.clock.start();
         this._render();
     }
 
+    /**
+     * Ends the render loop and pauses the clock.
+     */
     stop() {
         this.isActive = false;
         this.clock.stop();
@@ -52,6 +62,11 @@ export default class WebScene {
         return delta;
     }
 
+    /**
+     * Main render loop.
+     * Renders the graphics for every frame in a scene.
+     * Calls the animate function for child classes providing it with the delta time.
+     */
     _render() {
         if(this.isActive) {
             const delta = this.clock.getDelta();
