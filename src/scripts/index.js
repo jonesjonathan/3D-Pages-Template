@@ -64,6 +64,14 @@ class Site {
         }
 
         this.scene.start();
+
+        const promise = new Promise(((resolve, reject) => {
+            resolve(this.scene.loader.waitForCache());
+        }).bind(this));
+
+        promise.then(((cache) => {
+            this.scene.onAssetsLoaded(cache);
+        }).bind(this));
     }
 
     /**

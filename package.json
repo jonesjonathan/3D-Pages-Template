@@ -12,8 +12,7 @@
   "homepage": "https://jonesjonathan.github.io/",
   "dependencies": {
     "three": "^0.103.0",
-    "three-gltf-loader": "^1.103.0",
-    "three-obj-loader": "^1.1.3"
+    "three-gltf-loader": "^1.103.0"
   },
   "devDependencies": {
     "move-cli": "^1.2.1",

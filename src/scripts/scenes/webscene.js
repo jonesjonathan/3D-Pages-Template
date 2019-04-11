@@ -4,6 +4,8 @@ import {
     Clock
 } from "three";
 
+import Loader from '../loader';
+
 /**
  * Parent class for all scenes.
  */
@@ -24,8 +26,19 @@ export default class WebScene {
         // List of event listener references
         this.eventListeners = [];
 
+        // Asset loader
+        this.loader = new Loader();
+
         // Bind functions to context
         this._render = this._render.bind(this);
+    }
+
+    /**
+     * 
+     */
+    onAssetsLoaded(cache) {
+        // const foo = cache.objectName.scene
+        return cache;
     }
 
     /**
