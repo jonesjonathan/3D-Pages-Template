@@ -66,7 +66,9 @@ class Site {
         this.scene.start();
 
         const promise = new Promise(((resolve, reject) => {
-            resolve(this.scene.loader.waitForCache());
+            this.scene.loader.waitForCache().then((cache) => {
+                resolve(cache);
+            });
         }).bind(this));
 
         promise.then(((cache) => {

@@ -53,9 +53,13 @@ export default class Loader {
     }
 
     waitForCache() {
-        Promise.all(this._queue).then((() => {
-            return this.cache;
+        const promise = new Promise(((resolve, reject) => {
+            Promise.all(this._queue).then((() => {
+                resolve(this.cache);
+            }).bind(this));
         }).bind(this));
+
+        return promise;
     }
     
 };
