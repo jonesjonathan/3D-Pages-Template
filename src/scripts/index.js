@@ -20,6 +20,9 @@ class Site {
 
         // Load starting scene
         this.loadScene('/');
+
+        // DEBUG
+        // document.site = this;
     }
 
     _initEventListeners() {
@@ -53,7 +56,11 @@ class Site {
             this.scene.removeEventListeners();
         }
 
-        // Load new scene
+        // TODO: Loading scene/page start
+        // const loadingScene = new LoadingScene(this.renderer);
+        // loadingScene.start();
+
+        // Begin loading new scene
         switch(path) {
             case '/':
                 this.scene = new Sample(this.renderer);
@@ -63,8 +70,6 @@ class Site {
                 break;
         }
 
-        this.scene.start();
-
         const promise = new Promise(((resolve, reject) => {
             this.scene.loader.waitForCache().then((cache) => {
                 resolve(cache);
@@ -72,7 +77,10 @@ class Site {
         }).bind(this));
 
         promise.then(((cache) => {
+            // TODO: Loading scene/page end
+            // loadingScene.stop();
             this.scene.onAssetsLoaded(cache);
+            this.scene.start();
         }).bind(this));
     }
 
