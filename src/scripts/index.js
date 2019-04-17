@@ -3,6 +3,9 @@
  * Handles setup and scene routing.
  */
 
+// Loading scene for loading screens
+import LoadingScene from './scenes/loading';
+
 // Sample scene for default loading
 import Sample from './scenes/sample';
 
@@ -22,7 +25,7 @@ class Site {
         this.loadScene('/');
 
         // DEBUG
-        // document.site = this;
+        document.site = this;
     }
 
     _initEventListeners() {
@@ -56,9 +59,8 @@ class Site {
             this.scene.removeEventListeners();
         }
 
-        // TODO: Loading scene/page start
-        // const loadingScene = new LoadingScene(this.renderer);
-        // loadingScene.start();
+        const loadingScene = new LoadingScene(this.renderer);
+        loadingScene.start();
 
         // Begin loading new scene
         switch(path) {
@@ -77,8 +79,8 @@ class Site {
         }).bind(this));
 
         promise.then(((cache) => {
-            // TODO: Loading scene/page end
-            // loadingScene.stop();
+            loadingScene.stop();
+            loadingScene.removeEventListeners();
             this.scene.onAssetsLoaded(cache);
             this.scene.start();
         }).bind(this));
