@@ -1,64 +1,53 @@
-import {ObjectLoader, TextureLoader} from 'three';
+import {ObjectLoader, TextureLoader, LoadingManager} from 'three';
 import GLTFLoader from 'three-gltf-loader';
 
-const objectLoader = new ObjectLoader();
-const textureLoader = new TextureLoader();
-const gltfLoader = new GLTFLoader();
+let isLoading = false;
+const manager = new LoadingManager();
+manager.onStart = () => { isLoading = true; }
+
+const objectLoader = new ObjectLoader(manager);
+const textureLoader = new TextureLoader(manager);
+const gltfLoader = new GLTFLoader(manager);
 
 export default class Loader {
     constructor() {
-        this._queue = [];
         this.cache = {};
-
         this._load = this._load.bind(this);
     }
 
-    _load(resolve, reject, loader, url, id) {
+    _load(loader, url, id) {
         loader.load(
             url,
             (asset) => { // onSuccess
                 this.cache[id] = asset;
-                resolve(asset);    
-            },
-            () => {}, // onProgress
-            err => reject(err)
+            }
         );
     }
 
     addObjectToQueue(url, id) {
-        const promise = new Promise(((resolve, reject) => {
-            this._load(resolve, reject, objectLoader, url, id);
-        }).bind(this));
-        
-        this._queue.push(promise);
-        return promise;
+        this._load(objectLoader, url, id);
     }
 
     addTextureToQueue(url, id) {
-        const promise = new Promise(((resolve, reject) => {
-            this._load(resolve, reject, textureLoader, url, id);
-        }).bind(this));
-        
-        this._queue.push(promise);
-        return promise;
+        this._load(textureLoader, url, id);
     }
 
     addGLTFToQueue(url, id) {
-        const promise = new Promise(((resolve, reject) => {
-            this._load(resolve, reject, gltfLoader, url, id);
-        }).bind(this));
-        
-        this._queue.push(promise);
-        return promise;
+        this._load(gltfLoader, url, id);
     }
 
     waitForCache() {
         const promise = new Promise(((resolve, reject) => {
-            Promise.all(this._queue).then((() => {
+            if(isLoading) {
+                manager.onLoad = (() => {
+                    isLoading = false;
+                    console.log( 'Loading complete!');
+                    resolve(this.cache);
+                }).bind(this);
+            } else {
                 resolve(this.cache);
-            }).bind(this));
+            }
         }).bind(this));
-
         return promise;
     }
     

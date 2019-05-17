@@ -14,6 +14,10 @@ export default class Sample extends WebScene {
         super(renderer);
     }
 
+    clean() {
+        // TODO: End procedure for this scene
+    }
+
     _animate(delta) {
     }
 };

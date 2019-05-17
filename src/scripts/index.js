@@ -55,8 +55,7 @@ class Site {
 
         // Clean up previous scene if it exists
         if(this.scene) {
-            this.scene.stop();
-            this.scene.removeEventListeners();
+            this.scene.end();
         }
 
         const loadingScene = new LoadingScene(this.renderer);
@@ -72,18 +71,13 @@ class Site {
                 break;
         }
 
-        const promise = new Promise(((resolve, reject) => {
-            this.scene.loader.waitForCache().then((cache) => {
-                resolve(cache);
-            });
-        }).bind(this));
-
-        promise.then(((cache) => {
-            loadingScene.stop();
-            loadingScene.removeEventListeners();
+        this.scene.loader.waitForCache().then(((cache) => {
+            loadingScene.end();
             this.scene.onAssetsLoaded(cache);
             this.scene.start();
+            console.log('Scene started');
         }).bind(this));
+
     }
 
     /**
