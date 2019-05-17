@@ -3,6 +3,9 @@
  * Handles setup and scene routing.
  */
 
+// Loading scene for loading screens
+import LoadingScene from './scenes/loading';
+
 // Sample scene for default loading
 import Sample from './scenes/sample';
 
@@ -20,6 +23,9 @@ class Site {
 
         // Load starting scene
         this.loadScene('/');
+
+        // DEBUG
+        document.site = this;
     }
 
     _initEventListeners() {
@@ -49,11 +55,13 @@ class Site {
 
         // Clean up previous scene if it exists
         if(this.scene) {
-            this.scene.stop();
-            this.scene.removeEventListeners();
+            this.scene.end();
         }
 
-        // Load new scene
+        const loadingScene = new LoadingScene(this.renderer);
+        loadingScene.start();
+
+        // Begin loading new scene
         switch(path) {
             case '/':
                 this.scene = new Sample(this.renderer);
@@ -63,17 +71,13 @@ class Site {
                 break;
         }
 
-        this.scene.start();
-
-        const promise = new Promise(((resolve, reject) => {
-            this.scene.loader.waitForCache().then((cache) => {
-                resolve(cache);
-            });
-        }).bind(this));
-
-        promise.then(((cache) => {
+        this.scene.loader.waitForCache().then(((cache) => {
+            loadingScene.end();
             this.scene.onAssetsLoaded(cache);
+            this.scene.start();
+            console.log('Scene started');
         }).bind(this));
+
     }
 
     /**

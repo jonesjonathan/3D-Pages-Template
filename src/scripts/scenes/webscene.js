@@ -68,6 +68,15 @@ export default class WebScene {
     }
 
     /**
+     * Ends this scene, removes all event listeners
+     */
+    end() {
+        if(this.clean) this.clean();
+        this.stop();
+        this.removeEventListeners();
+    }
+
+    /**
      * Override this in children. Updates objects in scene every frame.
      * @param {Number} delta Time passed in seconds since last frame
      */
